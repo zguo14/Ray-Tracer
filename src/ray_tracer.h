@@ -2,7 +2,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define NOMINMAX
 
-
 // OpenGL
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -249,13 +248,11 @@ public:
 // main image buffer to be displayed
 Image FrameBuffer(globalWidth, globalHeight);
 
-// you may want to use the following later for progressive ray tracing
+
 Image AccumulationBuffer(globalWidth, globalHeight);
 unsigned int sampleCount = 0;
 
 
-
-// keyboard events (you do not need to modify it unless you want to)
 void keyFunc(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 		switch (key) {
@@ -335,7 +332,7 @@ void keyFunc(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 
 
-// mouse button events (you do not need to modify it unless you want to)
+// mouse button events 
 void mouseButtonFunc(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
 		if (action == GLFW_PRESS) {
@@ -352,7 +349,7 @@ void mouseButtonFunc(GLFWwindow* window, int button, int action, int mods) {
 
 
 
-// mouse button events (you do not need to modify it unless you want to)
+// mouse button events 
 void cursorPosFunc(GLFWwindow* window, double mouse_x, double mouse_y) {
 	if (mouseLeftPressed) {
 		const float xfact = -ANGFACT * float(mouse_y - m_mouseY);
@@ -411,9 +408,6 @@ public:
 
 
 
-// uber material
-// "type" will tell the actual type
-// ====== implement it in A2, if you want ======
 enum enumMaterialType {
 	MAT_LAMBERTIAN,
 	MAT_METAL,
@@ -657,11 +651,6 @@ public:
 	AABB bbox;
 
 	void transform(const float4x4& m) {
-		// ====== implement it if you want =====
-		// matrix transformation of an object	
-		// m is a matrix that transforms an object
-		// implement proper transformation for positions and normals
-		// (hint: you will need to have float4 versions of p and n)
 		for (unsigned int i = 0; i < this->triangles.size(); i++) {
 			for (int k = 0; k <= 2; k++) {
 				const float3 &p = this->triangles[i].positions[k];
@@ -672,12 +661,7 @@ public:
 	}
 
 	void rasterizeTriangle(const Triangle& tri, const float4x4& plm) const {
-		// ====== implement it in A1 ======
 		// rasterization of a triangle
-		// "plm" should be a matrix that contains perspective projection and the camera matrix
-		// you do not need to implement clipping
-		// you may call the "shade" function to get the pixel value
-		// (you may ignore viewDir for now)		
 
 		// 3D coords of the triangle in world space
 		float3 pos1 = tri.positions[0];
@@ -816,10 +800,10 @@ public:
 	}
 
 	bool raytraceTriangle(HitInfo& result, const Ray& ray, const Triangle& tri, float tMin, float tMax) const {
-		// ====== implement it in A2 ======
 		// ray-triangle intersection
 		// fill in "result" when there is an intersection
 		// return true/false if there is an intersection or not
+
 		// vertices of a triangle
 		float3 a = tri.positions[0];
 		float3 b = tri.positions[1];
@@ -1002,7 +986,7 @@ public:
 	}
 
 
-	// load .obj file (you do not need to modify it unless you want to change something)
+	// load .obj file
 	bool load(const char* filename, const float4x4& ctm = linalg::identity) {
 		int nVertices = 0;
 		float* vertices;
@@ -1020,7 +1004,6 @@ public:
 		if (matid != nullptr) {
 			for (unsigned int i = 0; i < materials.size(); i++) {
 				// convert .mlt data into BSDF definitions
-				// you may change the followings in the final project if you want
 				materials[i].type = MAT_LAMBERTIAN;
 				if (materials[i].Ns == 100.0f) {
 					materials[i].type = MAT_METAL;
@@ -1142,7 +1125,6 @@ public:
 
 
 private:
-	// === you do not need to modify the followings in this class ===
 	void loadTexture(const char* fname, const int i) {
 		int comp;
 		materials[i].texture = stbi_load(fname, &materials[i].textureWidth, &materials[i].textureHeight, &comp, 3);
@@ -1513,8 +1495,6 @@ public:
 };
 
 
-// ====== implement it in A2 extra ======
-// fill in the missing parts
 class BVH {
 public:
 	const TriangleMesh* triangleMesh = nullptr;
@@ -1769,7 +1749,6 @@ public:
 	}
 
 	void step() {
-		// === fill in this part in A3 ===
 		// update the particle position and velocity here
 
 		// Task 1
@@ -2269,10 +2248,6 @@ public:
 static Scene globalScene;
 
 
-
-// ====== implement it in A2 ======
-// fill in the missing parts
-
 // Final project: for soft shadow
 float traceShadowRay(const HitInfo& hit, const PointLightSource& light, float radius, int sampleCount) {
 	std::default_random_engine generator;
@@ -2634,7 +2609,6 @@ public:
 
 
 // main window
-// you probably do not need to modify this in A0 to A3.
 class Window {
 public:
 	// put this first to make sure that the glInit's constructor is called before the one for Window
@@ -2695,5 +2669,3 @@ public:
 		}
 	}
 };
-
-
