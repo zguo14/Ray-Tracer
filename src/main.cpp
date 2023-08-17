@@ -1,16 +1,6 @@
 #include "ray_tracer.h"
 Window window;
 
-// draw something in each frame
-static void draw() {
-    for (int j = 0; j < globalHeight; j++) {
-        for (int i = 0; i < globalWidth; i++) {
-            FrameBuffer.pixel(i, j) = float3(PCG32::rand()); // noise
-            // FrameBuffer.pixel(i, j) = float3(0.5f * (cos((i + globalFrameCount) * 0.1f) + 1.0f)); // moving cosine
-        }
-    }
-}
-
 // setting up lighting
 static PointLightSource light;
 static PointLightSource light1;
@@ -41,7 +31,7 @@ static void setupScene(int argc, const char* argv[]) {
             mesh.createSingleTriangle();
         }
     } else {
-        printf("Specify .obj file in the command line arguments. Example: ex.exe cornellbox.obj\n");
+        printf("Specify .obj file in the command line arguments. Example: ./ray_tracer room.obj\n");
         printf("Making a single triangle instead.\n");
         mesh.createSingleTriangle();
     }
